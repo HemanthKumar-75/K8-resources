@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: labela
+  labels:
+    name: myapp
+    project: expense
+    environment: dev
+    using: K8
+    resourceName: labels
+spec:
+  containers:
+    - name: nginx
+      image: nginx

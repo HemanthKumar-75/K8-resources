@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotations
+  annotations:
+    name: myapp
+    project: expense
+    environment: dev
+    using: K8
+    URL: "https://hub.docker.com/_/node"
+    imageURL: "https://hub.docker.com/_/node/docker_hub.com"
+    resourceName: annotations
+    details: "we can give annotations as lenghty way of details and URLs and image URLs and anything and there is no limitations here"
+spec:
+  containers:
+    - name: nginx
+      image: nginx
