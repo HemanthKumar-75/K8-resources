@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: labela
+  name: labels
   labels:
     name: myapp
     project: expense
