@@ -4,6 +4,6 @@ metadata:
   name: expense
   NameSpace: expense
 spec:
-  containers:
-    name: nginx
-    image: nginx
+  containers: # is the list of array 
+   - name: nginx
+     image: nginx
