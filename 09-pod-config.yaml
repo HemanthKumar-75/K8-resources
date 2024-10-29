@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-config-map
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      env:
+        - name: name
+          valueFrom:
+            configMapKeyRef:
+              name: config-map # The ConfigMap this value comes from.
+              key: name
+        - name: location
+          valueFrom:
+            configMapKeyRef:
+              name: config-map
+              key: location
+        - name: state
+          valueFrom:
+            configMapKeyRef:
+              name: config-map
+              key: state
+        - name: country
+          valueFrom:
+            configMapKeyRef:
+              name: config-map
+              key: country
