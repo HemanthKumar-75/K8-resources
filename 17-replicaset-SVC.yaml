@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx
+  labels:
+    apps: nginx
+    tier: 3-tier
+    module: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      apps: nginx
+      tier: 3-tier
+      module: frontend
+  template:
+    metadata:
+      labels:
+        apps: nginx
+        tier: 3-tier
+        module: frontend
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  nginx-new
+spec:
+  selector:
+    apps: nginx
+    tier: 3-tier
+    module: frontend
+  type:  LoadBalancer
+  ports:
+  - name:  replica-nginx-port
+    protocol: TCP
+    port:  80
+    targetPort:  80
