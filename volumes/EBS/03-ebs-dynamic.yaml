@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-dynamic-pv
+spec:
+  storageClassName: "expense-ebs-sc-dynamic"
+  # volumeName: ebs-dynamic-pvc  #it is required when you created manually only, otherwise K8 will takecare
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    purpose: ebs-dynamic-volume-creation
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    # command: ["/bin/sh"]
+    # args: ["-c", "while true; do echo $(date -u) >> /data/out.txt; sleep 5; done"]
+    volumeMounts:
+    - name: ebs-dynamic-pv
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: persistent-storage-dynamic
+    persistentVolumeClaim:
+      claimName: ebs-dynamic-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    purpose: ebs-dynamic-volume-creation
+  ports:
+    - name: nginx-svc-ports
+      protocol: TCP
+      ports: 80
+      targetPort: 80
+      nodePort: 30011
