@@ -24,7 +24,7 @@ spec:
     # command: ["/bin/sh"]
     # args: ["-c", "while true; do echo $(date -u) >> /data/out.txt; sleep 5; done"]
     volumeMounts:
-    - name: ebs-dynamic-pv
+    - name: persistent-storage-dynamic
       mountPath: /usr/share/nginx/html
   volumes:
   - name: persistent-storage-dynamic
@@ -36,11 +36,12 @@ kind: Service
 metadata:
   name: nginx
 spec:
+  type: LoadBalancer
   selector:
     purpose: ebs-dynamic-volume-creation
   ports:
     - name: nginx-svc-ports
       protocol: TCP
-      ports: 80
+      port: 80
       targetPort: 80
       nodePort: 30011
