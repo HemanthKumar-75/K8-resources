@@ -52,6 +52,7 @@ kind: Service
 metadata:
   name: nginx
 spec:
+  type: LoadBalancer
   selector:
     purpose: ebs-static-volume-creation
   ports:
