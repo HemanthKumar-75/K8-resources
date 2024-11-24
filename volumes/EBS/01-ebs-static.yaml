@@ -40,10 +40,10 @@ spec:
     # command: ["/bin/sh"]
     # args: ["-c", "while true; do echo $(date -u) >> /data/out.txt; sleep 5; done"]
     volumeMounts:
-    - name: ebs-static-pv
+    - name: persistent-storage-static  # must match the name in volumes.
       mountPath: /usr/share/nginx/html
   volumes:
-  - name: persistent-storage-static
+  - name: persistent-storage-static  # must match the name in volumeMounts.
     persistentVolumeClaim:
       claimName: ebs-static-pvc
 ---
