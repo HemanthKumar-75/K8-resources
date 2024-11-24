@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: efs-static-pv
+spec:
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 20Gi
+  csi:
+    driver: efs.csi.aws.com
+    # fsType: ext4
+    volumeHandle: fs-02a0c125bc396a6a4     # created volume ID we need to provide here
+  volumeMode: Filesystem
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-static-pvc
+spec:
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set. No default storage class is applied.
+  volumeName: efs-static-pv   # must match the name with PV name
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    purpose: efs-static-volume-creation
+spec:
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1a
+  containers:
+  - name: nginx
+    image: nginx
+    # command: ["/bin/sh"]
+    # args: ["-c", "while true; do echo $(date -u) >> /data/out.txt; sleep 5; done"]
+    volumeMounts:
+    - name: persistent-storage-static  # must match the name in volumes.
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: persistent-storage-static  # must match the name in volumeMounts.
+    persistentVolumeClaim:
+      claimName: efs-static-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  type: LoadBalancer
+  selector:
+    purpose: efs-static-volume-creation
+  ports:
+    - name: nginx-svc-ports
+      protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30010
