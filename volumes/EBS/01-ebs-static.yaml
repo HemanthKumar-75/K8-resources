@@ -15,15 +15,15 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-static-pv
+  name: ebs-static-pvc
 spec:
-  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
-  volumeName: ebs-static-pvc
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set. No default storage class is applied.
+  volumeName: ebs-static-pv   # must match the name with PV name
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 20Gi
 ---
 apiVersion: v1
 kind: Pod
@@ -58,5 +58,5 @@ spec:
     - name: nginx-svc-ports
       protocol: TCP
       ports: 80
-      targetPort: 80
-      # nodePort: 30010
+      targetPort: 8080
+      nodePort: 30010
