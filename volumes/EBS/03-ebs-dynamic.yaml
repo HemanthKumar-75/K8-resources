@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ebs-dynamic-pv
+  name: ebs-dynamic-pvc
 spec:
   storageClassName: "expense-ebs-sc-dynamic"
   # volumeName: ebs-dynamic-pvc  #it is required when you created manually only, otherwise K8 will takecare
